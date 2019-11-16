@@ -1,43 +1,36 @@
-import React from 'react';
-
-import FolderIcon from 'react-icons/lib/md/folder';
-import AddFolderIcon from 'react-icons/lib/md/create-new-folder';
-import RenameIcon from 'react-icons/lib/md/mode-edit';
-import TrashIcon from 'react-icons/lib/md/delete';
-import { Mutation } from 'react-apollo';
-import { DropTarget, DragSource } from 'react-dnd';
-import track from '@codesandbox/common/lib/utils/analytics';
-import { withRouter } from 'react-router-dom';
-import { History } from 'history';
-import { client } from 'app/graphql/client';
-
-import { Animate as ReactShow } from 'react-show';
-import { join, dirname } from 'path';
-
-import theme from '@codesandbox/common/lib/theme';
-
-import { ContextMenu } from 'app/components/ContextMenu';
+import { dirname, join } from 'path';
 
 import Input from '@codesandbox/common/lib/components/Input';
+import theme from '@codesandbox/common/lib/theme';
+import track from '@codesandbox/common/lib/utils/analytics';
 import {
   ARROW_LEFT,
   ARROW_RIGHT,
   ESC,
 } from '@codesandbox/common/lib/utils/keycodes';
-
-import { Container, AnimatedChevron, IconContainer } from './elements';
-
-import getDirectChildren from '../../../utils/get-direct-children';
-import { entryTarget, collectTarget } from '../folder-drop-target';
-
-import { CreateFolderEntry } from './CreateFolderEntry';
+import { ContextMenu } from 'app/components/ContextMenu';
+import { client } from 'app/graphql/client';
+import { History } from 'history';
+import React from 'react';
+import { Mutation } from 'react-apollo';
+import { DragSource, DropTarget } from 'react-dnd';
+import AddFolderIcon from 'react-icons/lib/md/create-new-folder';
+import TrashIcon from 'react-icons/lib/md/delete';
+import FolderIcon from 'react-icons/lib/md/folder';
+import RenameIcon from 'react-icons/lib/md/mode-edit';
+import { withRouter } from 'react-router-dom';
+import { Animate as ReactShow } from 'react-show';
 
 import {
-  PATHED_SANDBOXES_FOLDER_QUERY,
-  PATHED_SANDBOXES_CONTENT_QUERY,
   DELETE_FOLDER_MUTATION,
+  PATHED_SANDBOXES_CONTENT_QUERY,
+  PATHED_SANDBOXES_FOLDER_QUERY,
   RENAME_FOLDER_MUTATION,
 } from '../../../queries';
+import getDirectChildren from '../../../utils/get-direct-children';
+import { collectTarget, entryTarget } from '../folder-drop-target';
+import { CreateFolderEntry } from './CreateFolderEntry';
+import { AnimatedChevron, Container, IconContainer } from './elements';
 
 type Props = {
   name: string;
@@ -187,6 +180,7 @@ class FolderEntry extends React.Component<Props, State> {
                 query: PATHED_SANDBOXES_FOLDER_QUERY,
                 variables,
                 data: {
+                  // @ts-ignore
                   ...cacheData,
                   me: {
                     // @ts-ignore
@@ -217,6 +211,8 @@ class FolderEntry extends React.Component<Props, State> {
       connectDragSource(
         <div>
           <ContextMenu items={menuItems}>
+            {/* 
+              // @ts-ignore */}
             <Container
               as={onSelect ? 'div' : undefined}
               onClick={onSelect ? this.handleSelect : undefined}
@@ -407,9 +403,11 @@ const collectSource = (connect, monitor) => ({
 
 DropFolderEntry = (withRouter(
   // @ts-ignore Don't know how to mix dnd and react-router with right typings
-  DropTarget(['SANDBOX', 'FOLDER'], entryTarget, collectTarget)(
-    DragSource('FOLDER', entrySource, collectSource)(FolderEntry)
-  )
+  DropTarget(
+    ['SANDBOX', 'FOLDER'],
+    entryTarget,
+    collectTarget
+  )(DragSource('FOLDER', entrySource, collectSource)(FolderEntry))
 ) as unknown) as React.ComponentClass<Props, State>;
 
 export { DropFolderEntry };

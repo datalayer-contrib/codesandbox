@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
-import styled from 'styled-components';
-import { sortBy, takeRight } from 'lodash-es';
-
 import AutosizeTextArea from '@codesandbox/common/lib/components/AutosizeTextArea';
 import { ENTER } from '@codesandbox/common/lib/utils/keycodes';
 import { useOvermind } from 'app/overmind';
+import { sortBy, takeRight } from 'lodash-es';
+import React, { useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
 
 const Container = styled.div`
   min-height: 200px;
@@ -24,7 +23,7 @@ const Messages = styled.div`
 
 export const Chat: React.FC = () => {
   const [value, setValue] = useState('');
-  const [height, setHeight] = useState('');
+  const [height, setHeight] = useState(0);
   const { state, actions } = useOvermind();
   const messagesRef = useRef(null);
   const scrollDown = () => {
@@ -34,7 +33,7 @@ export const Chat: React.FC = () => {
   };
   useEffect(scrollDown);
 
-  const handleKeyDown = (e: KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.keyCode === ENTER && !e.shiftKey) {
       e.preventDefault();
       e.stopPropagation();
@@ -47,7 +46,7 @@ export const Chat: React.FC = () => {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value);
   };
 
@@ -62,9 +61,7 @@ export const Chat: React.FC = () => {
           sortBy(takeRight(messages, 100), 'date').map((message, i) => {
             const metadata = roomInfoUsers.find(u => u.id === message.userId);
             const color = metadata
-              ? `rgb(${metadata.color[0]}, ${metadata.color[1]}, ${
-                  metadata.color[2]
-                })`
+              ? `rgb(${metadata.color[0]}, ${metadata.color[1]}, ${metadata.color[2]})`
               : '#636363';
             const name = users[message.userId];
             return (

@@ -32,7 +32,7 @@ const Feedback: FunctionComponent<Props> = ({ id, user }) => {
 
   const onChange = ({
     target: { name, value },
-  }: ChangeEvent<HTMLInputElement>) => {
+  }: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     const noop = () => undefined;
     const settersByInputName = {
       email: setEmail,
