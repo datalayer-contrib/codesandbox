@@ -168,6 +168,7 @@ commands:
       - run:
           name: Build Application
           command: yarn build:prod
+          no_output_timeout: 30m
       - save_cache: *save_prod_build_cache
       - save_cache: *save_prod_result
       - run:
