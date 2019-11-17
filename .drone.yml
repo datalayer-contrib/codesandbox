@@ -12,7 +12,7 @@ steps:
         path: /cache
 
   - name: install packages
-    image: node:10.16.3-jessie
+    image: node:12.13.0-stretch
     volumes:
       - name: yarn-cache
         path: /usr/local/share/.cache/yarn/v4
@@ -20,7 +20,7 @@ steps:
       - yarn
 
   - name: build
-    image: node:10.16.3-jessie
+    image: node:12.13.0-stretch
     commands:
       - export STAGING_BRANCH=pr$DRONE_PULL_REQUEST
       - yarn build
@@ -110,7 +110,7 @@ steps:
         path: /cache
 
   - name: install packages
-    image: node:10.16.3-jessie
+    image: node:12.13.0-stretch
     volumes:
       - name: yarn-cache
         path: /usr/local/share/.cache/yarn/v4
@@ -118,7 +118,7 @@ steps:
       - yarn
 
   - name: build
-    image: node:10.16.3-jessie
+    image: node:12.13.0-stretch
     commands:
       - export STAGING_BRANCH=$DRONE_BRANCH
       - yarn build
@@ -177,6 +177,6 @@ trigger:
   branch: master
 ---
 kind: signature
-hmac: e625eaf2e469b9b6763641d4cc1f089900ef8d8c41db32c6f6aacb27bee8c19c
+hmac: 7b2185149b77e5823f95bc6c55b7dab1f375c64699064482e151d90c0cb6ae39
 
 ...
